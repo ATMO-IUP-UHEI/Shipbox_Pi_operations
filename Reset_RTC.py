@@ -2,10 +2,6 @@ import serial
 import sys
 import time
 
-# get first input argument -> number of relais
-command = sys.argv[1]
-print(command)
-
 #port number
 port = '/dev/ttyUSB0'
 
@@ -14,12 +10,16 @@ print('Open serial')
 ser = serial.Serial(port,9600,timeout=1)
 time.sleep(5)
 
-#write command
-print('Reset relay number '+str(command))
-ser.write(command.encode('utf-8'))
+# Get the current time and format it as a string
+current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+
+#write command to serial
+print('Reset RTC')
+ser.write(b'+')
+ser.write(current_time.encode('utf-8') + b'\n')
 print('Reset in progress. Please wait...')
-time.sleep(60)
-print('Resetting relay finished')
+time.sleep(10)
+print('Resetting RTC finished')
 
 #close serial
 ser.close()

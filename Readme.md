@@ -10,8 +10,16 @@ This repository contains all code installed on the Raspberry Pi in the current s
     + the GPS receiver
 2. SpecOn.py: this script switches the EM27 on using a relay.
 3. SpecOff.py: this script switches the EM27 off using a relay.
-4. SpecOn_Autostart.py: this is a derivative of SpecOn.py that can be used for the autostart. It switches the EM27 on and writes an entry into a relay log file.
-5. Trigger_Serial.py: this code triggers the Arduino to reset a relay. Command: python3 Trigger_Serial.py <Relais number>
+4. SpecOn_Autostart.py: this is a derivative of SpecOn.py that can be used for the autostart. It switches the EM27 and the DOAS on and writes an entry into a relay log file. It also switches the DOAS off again after 3 minutes, if the DOAS fitlet has not started.
+5. Trigger_Serial.py: this code triggers the Arduino to reset a relay. Command: python3 Trigger_Serial.py <letter for relais>. The following letters do exist: 
+    +  z -> DOAS computer
+    +  x -> Tracker computer
+    +  y -> OPUS computer
+    +  q -> Raspberry Pi
+6. Check_device_status.py: this code checks every 30 minutes whether the three fitlets are running. If not, it triggers the relais and restarts the respective computer by switching the power off and on. 
+7. DOASOff.py: this script switches the DOAS spectrometer off. 
+8. DOASOn.py: this script switches the DOAS spectrometer on. 
+9. Reset_RTC.py: this code resets the RTC of the reset Arduino to the current time. 
 
 ## Prerequisites
 
@@ -37,13 +45,29 @@ This repository contains all code installed on the Raspberry Pi in the current s
 4. SpecOn_Autostart.py:
     + Python 3
     + RPi.GPIO package
-    + Relais connected to pin 17
+    + ping3 package
+    + Relais connected to pin 17 for the EM27 and pin 18 for the DOAS
     + Relais log can be found in '/home/shippi/Documents/Relais_log.txt'. This folder needs to exist. 
 5. Trigger_Serial.py:
     + Python 3
     + pyserial package
     + Arduino connected via USB
-    + Serial port needs to be defined. Default: '/dev/ttyACM1'. Change if other port is used.
+    + Serial port needs to be defined. Default: '/dev/ttyUSB0'. Change if other port is used.
+    + Baudrate of serial: 9600. 
+6. Check_device_status.py: 
+    + Python 3
+    + ping3 package
+7. DOASOff.py:
+    + Python 3
+    + RPi.GPIO package 
+    + Relais connected to pin 18
+8. DOASOn.py:
+    + Python 3
+    + RPi.GPIO package 
+    + Relais connected to pin 18
+9. Reset_RTC.py:
+    + Python 3
+    + pyserial package
 
 ## Acknowledgement
 
@@ -54,3 +78,7 @@ This repository contains all code installed on the Raspberry Pi in the current s
 3. SpecOff.py: written by Marvin Knapp.
 4. SpecOn_Autostart.py: partly based on SpecOn.py written by Marvin Knapp.
 5. Trigger_Serial.py: None. 
+6. Check_device_status.py: None. 
+7. DOASOff.py: based on SpecOff.py by Marvin Knapp.
+8. DOASOn.py: based on SpecOn.py by Marvin Knapp.
+9. Reset_RTC.py: None. 
